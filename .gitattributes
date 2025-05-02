@@ -2,3 +2,4 @@
 *.cmd text eol=crlf
 *.java linguist-language=Java
 *.js linguist-language=JavaScript
+*.html linguist-detectable=false
