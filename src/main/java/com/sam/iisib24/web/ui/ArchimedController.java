@@ -1,0 +1,43 @@
+package com.sam.iisib24.web.ui;
+
+import com.sam.iisib24.model.Archimed;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@Controller
+public class ArchimedController {
+
+    // GET-запрос для отображения страницы
+    @GetMapping("/archimed")
+    public String showArchimedPage() {
+        return "archimed"; // Возвращаем название HTML-шаблона
+    }
+
+    // POST-запрос для вычисления силы Архимеда
+    @PostMapping("/archimed")
+    @ResponseBody
+    public Map<String, Object> calculateArchimedForce(
+            @RequestParam double density,
+            @RequestParam double volume,
+            @RequestParam double mass) {
+
+        Archimed archimed = new Archimed(density, volume, mass);
+
+        double archimedForce = archimed.calculatedArchimedForce();
+        double gravityForce = archimed.calculatedGravityForce();
+
+        log.info("догги работают");
+        log.info("Archimedes: {}, Archimedes Force: {}, Gravity Force: {}", archimed, archimedForce, gravityForce);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("archimedForce", archimedForce);
+        response.put("gravityForce", gravityForce);
+
+        return response;
+    }
+}
