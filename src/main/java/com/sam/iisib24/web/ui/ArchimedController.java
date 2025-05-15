@@ -1,6 +1,7 @@
 package com.sam.iisib24.web.ui;
 
 import com.sam.iisib24.model.Archimed;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -8,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
-@Controller
+@Slf4j         //добавляет поле log, через которое можно писать сообщения в консоль
+@Controller    //компонент, который обрабатывает HTTP-запросы и возвращает HTML-страницы
+@RequiredArgsConstructor
 public class ArchimedController {
+
+    private final Archimed archimed;
 
     // GET-запрос для отображения страницы
     @GetMapping("/archimed")
@@ -26,12 +30,13 @@ public class ArchimedController {
             @RequestParam double volume,
             @RequestParam double mass) {
 
-        Archimed archimed = new Archimed(density, volume, mass);
-
+        archimed.setDensity(density);
+        archimed.setMass(mass);
+        archimed.setVolume(volume);
         double archimedForce = archimed.calculatedArchimedForce();
         double gravityForce = archimed.calculatedGravityForce();
 
-        log.info("догги работают");
+        log.info("логи работают");
         log.info("Archimedes: {}, Archimedes Force: {}, Gravity Force: {}", archimed, archimedForce, gravityForce);
 
         Map<String, Object> response = new HashMap<>();
